@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="better_origin.MainPage">
+    
+    <!-- Background with Linear Gradient -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#2980b9" Offset="0.0" />
+            <GradientStop Color="#9b59b6" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    
+    <ContentPage.Content>
+        <StackLayout Padding="20" Spacing="25" VerticalOptions="Center">
+            
+            <!-- Logo -->
+            <Image Source="map_pin.png"
+                   WidthRequest="150" 
+                   HeightRequest="150" 
+                   HorizontalOptions="Center"/>
+
+            <!-- Title -->
+            <Label Text="Welcome Back!" 
+                   FontSize="32"
+                   HorizontalOptions="Center" 
+                   TextColor="White"/>
+            
+            <!-- Email Entry -->
+            <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
+                <StackLayout>
+                    <Entry x:Name="EmailEntry" 
+                           Placeholder="Email" 
+                           Keyboard="Email" 
+                           TextColor="White" 
+                           BackgroundColor="Transparent"
+                           PlaceholderColor="White"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Password Entry -->
+            <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
+                <StackLayout>
+                    <Entry x:Name="PasswordEntry" 
+                           Placeholder="Password" 
+                           IsPassword="True" 
+                           TextColor="Black" 
+                           BackgroundColor="Transparent"
+                           PlaceholderColor="White"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Login Button -->
+            <Button Text="Login"
+                    FontAttributes="Bold"
+                    BackgroundColor="White"
+                    TextColor="#007BFF"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Command="{Binding LoginCommand}" />
+
+            <!-- Register Button -->
+            <Button Text="Register"
+                    FontAttributes="Bold"
+                    BackgroundColor="Transparent"
+                    BorderColor="White"
+                    BorderWidth="2"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    Clicked="OnRegisterButtonClicked"/> 
+
+            <!-- Forgot Password Link -->
+            <Label Text="Forgot your password?" 
+                   FontSize="Small" 
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
