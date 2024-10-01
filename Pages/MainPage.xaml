@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              NavigationPage.HasNavigationBar="False"
-             x:Class="better_origin.MainPage">
+             x:Class="better_origin.Pages.MainPage">
     
     <!-- Background with Linear Gradient -->
     <ContentPage.Background>
@@ -58,7 +58,8 @@
                     TextColor="#007BFF"
                     CornerRadius="10"
                     HeightRequest="50"
-                    Command="{Binding LoginCommand}" />
+                    Clicked="OnLoginButtonClicked"
+                    />
 
             <!-- Register Button -->
             <Button Text="Register"
@@ -78,7 +79,7 @@
                    HorizontalOptions="Center"
                    VerticalOptions="End">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                    <TapGestureRecognizer Tapped="OnForgotButtonClicked" />
                 </Label.GestureRecognizers>
             </Label>
 

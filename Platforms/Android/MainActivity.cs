@@ -9,4 +9,11 @@ namespace better_origin;
                            ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
+    protected override void OnCreate(Bundle? savedInstanceState)
+    {
+        base.OnCreate(savedInstanceState);
+
+        // Initialize Firebase here
+        //FirebaseApp.InitializeApp(this);
+    }
 }

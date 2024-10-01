@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              NavigationPage.HasNavigationBar="False"
-             x:Class="better_origin.RegisterPage">
+             x:Class="better_origin.Pages.RegisterPage">
 
     <!-- Background with Linear Gradient -->
     <ContentPage.Background>
@@ -70,7 +70,8 @@
                     TextColor="#007BFF"
                     CornerRadius="10"
                     HeightRequest="50"
-                    Command="{Binding RegisterCommand}" />
+                    Clicked="OnRegisterButtonClicked"
+                   />
 
             <!-- Already have an account? Link -->
             <Label Text="Already have an account?" 

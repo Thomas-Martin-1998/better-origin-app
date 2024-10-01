@@ -1,11 +1,14 @@
-﻿namespace better_origin;
+﻿using better_origin.Pages;
+using Firebase.Auth;
+
+namespace better_origin;
 
 public partial class App : Application
 {
-    public App()
+    public App(IServiceProvider serviceProvider)
     {
         InitializeComponent();
-        MainPage = new NavigationPage(new MainPage());
-        NavigationPage.SetHasNavigationBar(MainPage, false);
+        var authClient = serviceProvider.GetRequiredService<FirebaseAuthClient>();
+        MainPage = new NavigationPage(new MainPage(authClient));
     }
 }
