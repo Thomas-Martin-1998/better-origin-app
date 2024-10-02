@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -11,10 +13,21 @@ namespace better_origin.Pages;
 public partial class RegisterPage : ContentPage
 {
     private readonly FirebaseAuthClient _firebaseAuth;
+    private bool _isBusy;
+    public new bool IsBusy
+    {
+        get => _isBusy;
+        set
+        {
+            _isBusy = value;
+            OnPropertyChanged(nameof(IsBusy)); // Notify UI of property change
+        }
+    }
     public RegisterPage(FirebaseAuthClient firebaseAuth)
     {
         _firebaseAuth = firebaseAuth;
         InitializeComponent();
+        BindingContext = this;
     }
 
     private async void OnAlreadyLabelTapped(object sender, EventArgs e)
@@ -32,7 +45,20 @@ public partial class RegisterPage : ContentPage
 
     private async void SignUp()
     {
-        await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(EmailEntry.Text, PasswordEntry.Text);
+        try
+        {
+            await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(EmailEntry.Text, PasswordEntry.Text);
+        }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Error", ex.Reason.ToString(), "OK");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await DisplayAlert("Error", "An unexpected error occurred. Please try again.", "OK");
+        }
+        
         
         if (_firebaseAuth.User != null)
         { 

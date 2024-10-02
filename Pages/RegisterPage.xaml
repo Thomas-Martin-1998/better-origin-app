@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:better_origin.Pages"
              NavigationPage.HasNavigationBar="False"
-             x:Class="better_origin.Pages.RegisterPage">
+             x:Class="better_origin.Pages.RegisterPage"
+             x:DataType="local:RegisterPage">
 
     <!-- Background with Linear Gradient -->
     <ContentPage.Background>
@@ -13,76 +16,84 @@
     </ContentPage.Background>
 
     <ContentPage.Content>
-        <StackLayout Padding="20" Spacing="25" VerticalOptions="Center">
+        <Grid>
+            <StackLayout Padding="20" Spacing="25" VerticalOptions="Center">
 
-            <!-- Logo -->
-            <Image Source="map_pin.png"
-                   WidthRequest="150" 
-                   HeightRequest="150" 
-                   HorizontalOptions="Center"/>
+                <!-- Logo -->
+                <Image Source="map_pin.png"
+                       WidthRequest="150"
+                       HeightRequest="150"
+                       HorizontalOptions="Center" />
 
-            <!-- Title -->
-            <Label Text="Create Account" 
-                   FontSize="32"
-                   HorizontalOptions="Center" 
-                   TextColor="White"/>
+                <!-- Title -->
+                <Label Text="Create Account"
+                       FontSize="32"
+                       HorizontalOptions="Center"
+                       TextColor="White" />
 
-            <!-- Email Entry -->
-            <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
-                <StackLayout>
-                    <Entry x:Name="EmailEntry" 
-                           Placeholder="Email" 
-                           Keyboard="Email" 
-                           TextColor="White" 
-                           BackgroundColor="Transparent"
-                           PlaceholderColor="White"/>
-                </StackLayout>
-            </Frame>
+                <!-- Email Entry -->
+                <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
+                    <StackLayout>
+                        <Entry x:Name="EmailEntry"
+                               Placeholder="Email"
+                               Keyboard="Email"
+                               TextColor="White"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="White" />
+                    </StackLayout>
+                </Frame>
 
-            <!-- Password Entry -->
-            <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
-                <StackLayout>
-                    <Entry x:Name="PasswordEntry" 
-                           Placeholder="Password" 
-                           IsPassword="True" 
-                           TextColor="White" 
-                           BackgroundColor="Transparent"
-                           PlaceholderColor="White"/>
-                </StackLayout>
-            </Frame>
+                <!-- Password Entry -->
+                <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
+                    <StackLayout>
+                        <Entry x:Name="PasswordEntry"
+                               Placeholder="Password"
+                               IsPassword="True"
+                               TextColor="White"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="White" />
+                    </StackLayout>
+                </Frame>
 
-            <!-- Confirm Password Entry -->
-            <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
-                <StackLayout>
-                    <Entry x:Name="ConfirmPasswordEntry" 
-                           Placeholder="Confirm Password" 
-                           IsPassword="True" 
-                           TextColor="White" 
-                           BackgroundColor="Transparent"
-                           PlaceholderColor="White"/>
-                </StackLayout>
-            </Frame>
+                <!-- Confirm Password Entry -->
+                <Frame Padding="0" BorderColor="White" CornerRadius="5" HasShadow="False" BackgroundColor="Transparent">
+                    <StackLayout>
+                        <Entry x:Name="ConfirmPasswordEntry"
+                               Placeholder="Confirm Password"
+                               IsPassword="True"
+                               TextColor="White"
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="White" />
+                    </StackLayout>
+                </Frame>
 
-            <!-- Register Button -->
-            <Button Text="Register"
-                    FontAttributes="Bold"
-                    BackgroundColor="White"
-                    TextColor="#007BFF"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    Clicked="OnRegisterButtonClicked"
-                   />
+                <!-- Register Button -->
+                <Button Text="Register"
+                        FontAttributes="Bold"
+                        BackgroundColor="White"
+                        TextColor="#007BFF"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Clicked="OnRegisterButtonClicked" />
 
-            <!-- Already have an account? Link -->
-            <Label Text="Already have an account?" 
-                   FontSize="Small" 
-                   TextColor="White"
-                   HorizontalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAlreadyLabelTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                <!-- Already have an account? Link -->
+                <Label Text="Already have an account?"
+                       FontSize="Small"
+                       TextColor="White"
+                       HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAlreadyLabelTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
 
-        </StackLayout>
+            </StackLayout>
+
+            <!-- Activity Indicator (Loading Spinner) -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="End"
+                               Margin="0,0,0,40" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

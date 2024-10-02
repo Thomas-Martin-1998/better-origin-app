@@ -9,8 +9,16 @@ namespace better_origin.Pages;
 
 public partial class HomePage : ContentPage
 {
+    private readonly FirebaseAuthClient _firebaseAuth;
     public HomePage(FirebaseAuthClient firebaseAuth)
     {
+        _firebaseAuth = firebaseAuth;
         InitializeComponent();
+    }
+    
+    private void OnLogoutButtonClicked(object sender, EventArgs e)
+    {
+        _firebaseAuth.SignOut();
+        Navigation.PopToRootAsync();
     }
 }
