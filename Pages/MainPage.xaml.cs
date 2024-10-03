@@ -50,15 +50,21 @@ public partial class MainPage : ContentPage
     
     private async void OnForgotButtonClicked(object sender, EventArgs e)
     {
-        if (EmailEntry?.Text != null && MainPageViewModel.IsValidEmail(EmailEntry.Text))
+        _viewModel.ToggleLabelEnabled();
+        _viewModel.IsBusy = true;
+        
+        if (MainPageViewModel.IsValidEmail(EmailEntry.Text))
         {
             await _firebaseAuth.ResetEmailPasswordAsync(EmailEntry.Text);
-            await DisplayAlert("Email Sent", "Check spam folder, and make sure account exists", "OK");
+            await DisplayAlert("Email Sent", "Check spam folder and verify that your account exists.", "OK");
         }
         else
         {
             await DisplayAlert("Error", "Please enter a valid email", "OK");
         }
+        
+        _viewModel.IsBusy = false;
+        _viewModel.ToggleLabelEnabled();
     }
 
     private async void SignIn()
@@ -77,9 +83,7 @@ public partial class MainPage : ContentPage
         {
             await Navigation.PushAsync(new HomePage(_firebaseAuth));
             PasswordEntry.Text = "";
-        } else {Console.WriteLine("Login Failed, User null");
-}
-        
+        } else Console.WriteLine("Login Failed, User null");
     }
     
     private static void TestEnv() //TODO remove

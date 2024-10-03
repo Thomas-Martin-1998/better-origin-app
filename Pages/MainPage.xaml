@@ -3,9 +3,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:better_origin.Pages"
+             xmlns:viewModels="clr-namespace:better_origin.ViewModels"
              NavigationPage.HasNavigationBar="False"
              x:Class="better_origin.Pages.MainPage"
-             x:DataType="local:MainPage">
+             x:DataType="viewModels:MainPageViewModel">
 
     <!-- Background with Linear Gradient -->
     <ContentPage.Background>
@@ -79,7 +80,8 @@
                        FontSize="Small"
                        TextColor="White"
                        HorizontalOptions="Center"
-                       VerticalOptions="End">
+                       VerticalOptions="End"
+                       IsEnabled="{Binding IsForgotLabelEnabled}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnForgotButtonClicked" />
                     </Label.GestureRecognizers>

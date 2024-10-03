@@ -10,6 +10,7 @@ public partial class MainPageViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
     
     private bool _isBusy;
+    private bool _isForgotLabelEnabled = true;
     public bool IsBusy
     {
         get => _isBusy;
@@ -18,6 +19,20 @@ public partial class MainPageViewModel : INotifyPropertyChanged
             _isBusy = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBusy)));
         }
+    }
+    public bool IsForgotLabelEnabled
+    {
+        get => _isForgotLabelEnabled;
+        set
+        {
+            _isForgotLabelEnabled = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsForgotLabelEnabled)));
+        }
+    }
+
+    public void ToggleLabelEnabled()
+    {
+        IsForgotLabelEnabled = !IsForgotLabelEnabled;
     }
     
     public static bool IsValidEmail(string email)
