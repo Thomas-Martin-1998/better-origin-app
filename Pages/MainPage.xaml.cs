@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using better_origin.ViewModels;
 using Firebase.Auth;
 
 namespace better_origin.Pages;
@@ -7,22 +8,15 @@ namespace better_origin.Pages;
 public partial class MainPage : ContentPage
 {
     private readonly FirebaseAuthClient _firebaseAuth;
-    private bool _isBusy;
-    public new bool IsBusy
-    {
-        get => _isBusy;
-        set
-        {
-            _isBusy = value;
-            OnPropertyChanged(nameof(IsBusy)); // Notify UI of property change
-        }
-    }
+    private readonly MainPageViewModel _viewModel;
     
     public MainPage(FirebaseAuthClient firebaseAuth)
     {
-        _firebaseAuth = firebaseAuth;
         InitializeComponent();
-        BindingContext = this;
+        _firebaseAuth = firebaseAuth;
+        BindingContext = new MainPageViewModel();
+        _viewModel = (MainPageViewModel)BindingContext;
+        
     }
     
     private async void OnRegisterButtonClicked(object sender, EventArgs e)
@@ -30,44 +24,61 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(new RegisterPage(_firebaseAuth));
     }
     
-    private void OnLoginButtonClicked(object sender, EventArgs e)
+    private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
-        SignIn();
+        _viewModel.IsBusy = true;
+        
+        if (EmailEntry?.Text == null || MainPageViewModel.IsValidEmail(EmailEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a valid email", "OK");
+        }
+        else if (PasswordEntry?.Text == null)
+        {
+            await DisplayAlert("Error", "Password field cannot be empty", "OK");
+        }
+        else if(PasswordEntry.Text.Length < 6)
+        {
+            await DisplayAlert("Error", "Password must be at least 6 characters", "OK");
+        }
+        else
+        {
+            SignIn();
+        }
+        
+        _viewModel.IsBusy = false;
     }
     
-    private void OnForgotButtonClicked(object sender, EventArgs e)
+    private async void OnForgotButtonClicked(object sender, EventArgs e)
     {
-        _firebaseAuth.ResetEmailPasswordAsync(EmailEntry.Text);
-        Console.WriteLine("Email sent if email valid");
-        //TODO add popup saying email sent
+        if (EmailEntry?.Text != null && MainPageViewModel.IsValidEmail(EmailEntry.Text))
+        {
+            await _firebaseAuth.ResetEmailPasswordAsync(EmailEntry.Text);
+            await DisplayAlert("Email Sent", "Check spam folder, and make sure account exists", "OK");
+        }
+        else
+        {
+            await DisplayAlert("Error", "Please enter a valid email", "OK");
+        }
     }
 
     private async void SignIn()
     {
         try
         {
-            IsBusy = true; // Show loading indicator
             await _firebaseAuth.SignInWithEmailAndPasswordAsync(EmailEntry.Text, PasswordEntry.Text);
         }
         catch (FirebaseAuthException ex)
         {
-            await DisplayAlert("Error", ex.Reason.ToString(), "OK");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            await DisplayAlert("Error", "An unexpected error occurred. Please try again.", "OK");
-        }
-        finally
-        {
-            IsBusy = false; // Hide loading indicator
+            Console.WriteLine(ex.Message);
+            await DisplayAlert("Error", "Login failed", "OK");
         }
         
         if (_firebaseAuth.User != null)
         {
-          await Navigation.PushAsync(new HomePage(_firebaseAuth));
-          PasswordEntry.Text = "";
-        } else Console.WriteLine("Login Failed"); //TODO error handler
+            await Navigation.PushAsync(new HomePage(_firebaseAuth));
+            PasswordEntry.Text = "";
+        } else {Console.WriteLine("Login Failed, User null");
+}
         
     }
     
@@ -76,6 +87,4 @@ public partial class MainPage : ContentPage
        var firebaseKey = Environment.GetEnvironmentVariable("FIREBASE_API_KEY");
        Console.WriteLine($"FIREBASE_API_KEY: {firebaseKey}"); 
     }
-    
-    
 }

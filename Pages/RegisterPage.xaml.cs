@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using better_origin.ViewModels;
 using Firebase.Auth;
 
 namespace better_origin.Pages;
@@ -13,21 +14,15 @@ namespace better_origin.Pages;
 public partial class RegisterPage : ContentPage
 {
     private readonly FirebaseAuthClient _firebaseAuth;
-    private bool _isBusy;
-    public new bool IsBusy
-    {
-        get => _isBusy;
-        set
-        {
-            _isBusy = value;
-            OnPropertyChanged(nameof(IsBusy)); // Notify UI of property change
-        }
-    }
+    private readonly MainPageViewModel _viewModel;
+   
     public RegisterPage(FirebaseAuthClient firebaseAuth)
     {
-        _firebaseAuth = firebaseAuth;
+        
         InitializeComponent();
-        BindingContext = this;
+        _firebaseAuth = firebaseAuth;
+        BindingContext = new MainPageViewModel(); //We can share a view model with Login page
+        _viewModel = (MainPageViewModel)BindingContext;
     }
 
     private async void OnAlreadyLabelTapped(object sender, EventArgs e)
@@ -35,12 +30,32 @@ public partial class RegisterPage : ContentPage
         await Navigation.PopAsync();
     }
     
-    private void OnRegisterButtonClicked(object sender, EventArgs e)
+    private async void OnRegisterButtonClicked(object sender, EventArgs e)
     {
-        if (PasswordEntry.Text == ConfirmPasswordEntry.Text)
+        _viewModel.IsBusy = true;
+        
+        if (EmailEntry?.Text == null || MainPageViewModel.IsValidEmail(EmailEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a valid email", "OK");
+        }
+        else if (PasswordEntry?.Text == null || ConfirmPasswordEntry?.Text == null)
+        {
+            await DisplayAlert("Error", "Password fields cannot be empty", "OK");
+        }
+        else if (PasswordEntry.Text != ConfirmPasswordEntry.Text)
+        {
+            await DisplayAlert("Error", "Passwords do not match", "OK");
+        }
+        else if(PasswordEntry.Text.Length < 6)
+        {
+            await DisplayAlert("Error", "Password must be at least 6 characters", "OK");
+        }
+        else
         {
             SignUp();
-        } //TODO add else
+        }
+        
+        _viewModel.IsBusy = false;
     }
 
     private async void SignUp()
@@ -51,20 +66,15 @@ public partial class RegisterPage : ContentPage
         }
         catch (FirebaseAuthException ex)
         {
-            await DisplayAlert("Error", ex.Reason.ToString(), "OK");
+            Console.WriteLine(ex);
+            await DisplayAlert("Error", "Sign up failed", "OK");
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            await DisplayAlert("Error", "An unexpected error occurred. Please try again.", "OK");
-        }
-        
         
         if (_firebaseAuth.User != null)
         { 
             Navigation.InsertPageBefore(new HomePage(_firebaseAuth), this);
             await Navigation.PopAsync();
-        } else Console.WriteLine("SignUp Failed"); //Todo error handler
+        } else Console.WriteLine("SignUp Failed, User null");
     }
 
 }
