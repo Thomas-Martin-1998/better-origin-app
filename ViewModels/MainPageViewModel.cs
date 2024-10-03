@@ -10,7 +10,7 @@ public partial class MainPageViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
     
     private bool _isBusy;
-    public new bool IsBusy
+    public bool IsBusy
     {
         get => _isBusy;
         set

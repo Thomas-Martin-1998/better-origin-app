@@ -34,7 +34,7 @@ public partial class RegisterPage : ContentPage
     {
         _viewModel.IsBusy = true;
         
-        if (EmailEntry?.Text == null || MainPageViewModel.IsValidEmail(EmailEntry.Text))
+        if (!MainPageViewModel.IsValidEmail(EmailEntry.Text))
         {
             await DisplayAlert("Error", "Please enter a valid email", "OK");
         }
